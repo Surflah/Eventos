@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'PoppinsLocal';
+  src: url('/fonts/Poppins-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PoppinsLocal';
+  src: url('/fonts/Poppins-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PoppinsLocal';
+  src: url('/fonts/Poppins-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'CinzelLocal';
+  src: url('/fonts/Cinzel-Regular.ttf') format('truetype');
+  font-weight: 400 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PTSerifLocal';
+  src: url('/fonts/PTSerif-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PTSerifLocal';
+  src: url('/fonts/PTSerif-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PlayfairLocal';
+  src: url('/fonts/PlayfairDisplay-Regular.ttf') format('truetype');
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+:root {
+  --bg: #f4f6fa;
+  --bg2: #ffffff;
+  --bg3: #eef1f7;
+  --linha: #dde3ec;
+  --texto: #151a22;
+  --fraco: #5f6b7e;
+  --azul: #1f5fe0;
+  --azul2: #164bb5;
+  --marinho: #123f6b;
+  --verde: #12904a;
+  --verde2: #0c7239;
+  --ambar: #b45309;
+  --vermelho: #c62828;
+  --dourado: #9a7a1f;
+
+  --tel-papel: #f6f3ec;
+  --tel-papel2: #efe9dd;
+  --tel-tinta: #1b2230;
+  --tel-tinta2: #4a5568;
+  --tel-ouro: #94711c;
+  --tel-ouro2: #c9a24a;
+  --tel-azul: #16357e;
+  --tel-azul2: #0f2559;
+}
+
+html,
+body {
+  background-color: var(--bg);
+  color: var(--texto);
+  font-family: 'PoppinsLocal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Native <dialog> scroll containment (modern-web-guidance: dialog) */
+dialog:modal {
+  overscroll-behavior: contain;
+  margin: auto;
+}
+
+dialog::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background: rgba(15, 23, 42, 0.52);
+  backdrop-filter: blur(3px);
+}
+
+/* Responsive table wrapper (modern-web-guidance: responsive-table) */
+.table-wrapper {
+  overflow: auto;
+  max-inline-size: 100%;
+  container-type: inline-size;
+}
+
+.table-wrapper table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-wrapper thead {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+}
+
+/* Tabbed interface accessible active underline (modern-web-guidance: tabs) */
+.ssmh-tablist {
+  display: flex;
+  overflow-x: auto;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--linha);
+}
+
+.ssmh-tab {
+  position: relative;
+  flex: none;
+  padding: 0.75rem 1.15rem;
+  color: var(--fraco);
+  background: transparent;
+  cursor: pointer;
+}
+
+.ssmh-tab[aria-selected="true"] {
+  color: var(--azul);
+}
+
+.ssmh-tab[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  border-block-end: 3px solid var(--azul);
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+}

@@ -1,0 +1,157 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Configuracao {
+  chave     String   @id
+  valor     String
+  updatedAt DateTime @updatedAt
+}
+
+model UsuarioPainel {
+  id              Int       @id @default(autoincrement())
+  email           String    @unique
+  nome            String    @default("")
+  refreshTokenEnc String?
+  podeEnviarEmail Boolean   @default(false)
+  ultimoAcesso    DateTime?
+  createdAt       DateTime  @default(now())
+}
+
+model Vereador {
+  id         Int      @id @default(autoincrement())
+  nome       String
+  tratamento String   @default("Vereador") // "Vereador" | "Vereadora"
+  partido    String   @default("")
+  cargo      String   @default("")
+  ordem      Int      @default(10)
+  email      String   @default("")
+  whatsapp   String   @default("")
+  ativo      Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model ContatoCasa {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  cargo     String   @default("")
+  email     String
+  grupo     String   @default("Servidores e setores") // "Vereadores" | "Assessoria parlamentar" | "Servidores e setores" | "Canais institucionais"
+  partido   String   @default("")
+  obs       String   @default("")
+  selecionado Boolean @default(true)
+  ordem     Int      @default(100)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TrilhaAudio {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  arquivo   String   @unique
+  tamanho   Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model ModeloArte {
+  codigo     String   @id // "convite" | "certificado" | "convite_geral"
+  papel      String   @default("A5-paisagem")
+  fundoUrl   String   @default("")
+  larguraPx  Int      @default(1748)
+  alturaPx   Int      @default(1240)
+  blocosJson String   // JSON array de blocos c[i]
+  updatedAt  DateTime @updatedAt
+}
+
+model MocaoEntregueSapl {
+  id            Int      @id @default(autoincrement())
+  saplMateriaId Int      @unique
+  numero        Int
+  ano           Int
+  homenageado   String   @default("")
+  sessaoId      String?
+  devolvidaFila Boolean  @default(false)
+  updatedAt     DateTime @updatedAt
+}
+
+model Sessao {
+  id                       String        @id
+  titulo                   String        @default("Sessão Solene de Homenagens")
+  numero                   String        @default("")
+  local                    String        @default("Plenário da Câmara Municipal de Itapoá")
+  data                     String        // YYYY-MM-DD
+  hora                     String        @default("19:00")
+  presidente               String        @default("")
+  cerimonialista           String        @default("")
+  driveUrl                 String        @default("")
+  driveId                  String        @default("")
+  vereadoresJson           String        @default("[]")
+  autoridades              String        @default("")
+  abertura                 String        @default("")
+  aberturaMesaHash         String        @default("")
+  encerramento             String        @default("")
+  checklistJson            String        @default("{}")
+  conviteGeralEnviadosJson String        @default("[]")
+  estadoPalcoJson          String        @default("{}")
+  arquivada                Boolean       @default(false)
+  pautaSessaoId            Int?
+  createdAt                DateTime      @default(now())
+  updatedAt                DateTime      @updatedAt
+  homenageados             Homenageado[]
+}
+
+model Homenageado {
+  id                      String    @id
+  sessaoId                String
+  sessao                  Sessao    @relation(fields: [sessaoId], references: [id], onDelete: Cascade)
+  ordem                   Int       @default(1)
+  saplMateriaId           Int?
+  mocao                   String    @default("")
+  dataAprovacao           String    @default("")
+  mocaoPdfUrl             String    @default("")
+  nome                    String
+  qualificacao            String    @default("")
+  comoChamar              String    @default("ao")
+  proponente              String    @default("")
+  tratamentoProponente    String    @default("Vereador")
+  partidoProponente       String    @default("")
+  emailGabinete           String    @default("")
+  obs                     String    @default("")
+  feito                   String    @default("")
+  textoCerimonial         String    @default("")
+  textoMocao              String    @default("")
+  modoVideo               String    @default("com_som") // "com_som" | "sem_som"
+  videoArquivo            String?
+  fotosJson               String    @default("[]")
+  vaiFalar                String    @default("indefinido") // "sim" | "nao" | "indefinido"
+  representanteNome       String    @default("")
+  representanteCargo      String    @default("")
+  certificadoOverrideJson String    @default("{}")
+  uploadToken             String    @unique
+  prazoReabertoAte        DateTime?
+  convitePropEnviadoEm    DateTime?
+  cobrancaEmailEm         DateTime?
+  cobrancaWhatsappEm      DateTime?
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+
+  @@index([sessaoId, ordem])
+}
+
+model AuditLog {
+  id         Int      @id @default(autoincrement())
+  usuario    String
+  metodoAuth String   @default("senha")
+  acao       String
+  entidade   String
+  entidadeId String?
+  detalhes   String?
+  ip         String?
+  createdAt  DateTime @default(now())
+}
